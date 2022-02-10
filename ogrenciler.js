@@ -1,5 +1,8 @@
   
-
+  
+  var theForm=document.getElementById('Form1');
+	var siniflar=document.getElementById('Us_SinifSube1_ddlSinifSube');
+  var csv=[];
   function csvIndir(csv, filename) {
     var csvFile;
     var downloadLink;
@@ -18,10 +21,9 @@
     // linke tıklattık, dosya indirilecektir.
     downloadLink.click();
 }
-function csvAktar(filename){
-  var theForm=document.getElementById('Form1');
-	var siniflar=document.getElementById('Us_SinifSube1_ddlSinifSube');
-  var csv=[];
+
+
+
   for(let i=0;i<1;i++){
     theForm.Us_SinifSube1_ddlSinifSube.value=siniflar[i].value;
     theForm['pageMode'].value="Listele";
@@ -70,6 +72,7 @@ function csvAktar(filename){
 	
 	    })
     .then(console.log(csv))
+    .then(csvIndir(csv, "ogrenciler.csv"))
     .catch((error) => {
       console.error('Error:', error);
     });
@@ -87,5 +90,4 @@ function csvAktar(filename){
       }
     };*/
  }
-}
-csvAktar('ogrenciler.csv');
+
