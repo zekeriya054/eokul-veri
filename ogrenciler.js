@@ -1,7 +1,28 @@
   
+
+  function csvIndir(csv, filename) {
+    var csvFile;
+    var downloadLink;
+    // CSV dosyası oluşturduk
+    csvFile = new Blob([csv], {type: "text/csv"});
+    // İndirme Linkini oluşturuyoruz.
+    downloadLink = document.createElement("a");
+    // dosya adını aldık.
+    downloadLink.download = filename;
+    // linke dosyayı tanımladık.
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+    // Linki gizledik.
+    downloadLink.style.display = "none";
+    // Body alanına linki ekledik.
+    document.body.appendChild(downloadLink);
+    // linke tıklattık, dosya indirilecektir.
+    downloadLink.click();
+}
+function csvAktar(filename){
   var theForm=document.getElementById('Form1');
 	var siniflar=document.getElementById('Us_SinifSube1_ddlSinifSube');
-  for(let i=0;i<siniflar.length;i++){
+  var csv=[];
+  for(let i=0;i<1;i++){
     theForm.Us_SinifSube1_ddlSinifSube.value=siniflar[i].value;
     theForm['pageMode'].value="Listele";
     var formData = new FormData(theForm);
@@ -23,23 +44,32 @@
       var tablolar = doc.getElementById("dgListem"); 
       var satirlar = tablolar.getElementsByTagName("tr");
       for(let j in satirlar) {
-         if(j>0) {    
+         if(j>0) {  
+           var row=[];
            var satir=satirlar[j].getElementsByTagName('td');
            for(var sutun in satirlar) {
               switch(sutun) {
-                case '0': 
-                case '1': console.log(satir[sutun].innerText);break;
+              //  case '0': 
+                case '1': 
+                  row.push(satir[sutun].innerText);
+                  //console.log(satir[sutun].innerText);
+                  break;
                 case '2': 
                 case '3':
-                case '4':console.log(satir[sutun].innerText);break;
+                case '4':
+                  row.push(satir[sutun].innerText);
+                 // console.log(satir[sutun].innerText);
+                  break;
               }
             }
+           csv.push(row.join(","));
          }
       }
       
      
 	
 	    })
+    .then(console.log(csv))
     .catch((error) => {
       console.error('Error:', error);
     });
@@ -56,4 +86,6 @@
         alert(`Done, got ${xhr.response.length} bytes`); // response is the server response
       }
     };*/
+ }
 }
+csvAktar('ogrenciler.csv');
