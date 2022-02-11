@@ -1,7 +1,7 @@
   var theForm=document.getElementById('Form1');
-	var siniflar=document.getElementById('Us_SinifSube1_ddlSinifSube');
+  var siniflar=document.getElementById('Us_SinifSube1_ddlSinifSube');
   var csv= "";
-  for(let i=0;i<1;i++){
+  for(let i=0;i<siniflar.length;i++){
     theForm.Us_SinifSube1_ddlSinifSube.value=siniflar[i].value;
     theForm['pageMode'].value="Listele";
     var formData = new FormData(theForm);
@@ -17,8 +17,7 @@
     .then(html => {
       //console.log('Success:', data);
       var parser = new DOMParser();
-			var doc = parser.parseFromString(html, 'text/html');
-			//var table=doc.getElementById('Form1');
+      var doc = parser.parseFromString(html, 'text/html');
       var tablolar = doc.getElementById("dgListem"); 
       var satirlar = tablolar.getElementsByTagName("tr");
       for(let j in satirlar) {
@@ -52,18 +51,12 @@
     var downloadLink;
     var filename="ogrenciler.csv";
     // CSV dosyası oluşturduk
-    csvFile = new Blob([csv], { type: 'text/csv;charset=utf-8;'});
-    // İndirme Linkini oluşturuyoruz.
+    csvFile = new Blob([csv], { type: 'text/csv;charset=windows-1254;'});
     downloadLink = document.createElement("a");
-    // dosya adını aldık.
     downloadLink.download = filename;
-    // linke dosyayı tanımladık.
     downloadLink.href = window.URL.createObjectURL(csvFile);
-    // Linki gizledik.
     downloadLink.style.display = "none";
-    // Body alanına linki ekledik.
     document.body.appendChild(downloadLink);
-    // linke tıklattık, dosya indirilecektir.
     downloadLink.click();
 })
     .catch((error) => {
