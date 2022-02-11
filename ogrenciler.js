@@ -1,11 +1,55 @@
-  
-  
   var theForm=document.getElementById('Form1');
-	var siniflar=document.getElementById('Us_SinifSube1_ddlSinifSube');
+  var siniflar=document.getElementById('Us_SinifSube1_ddlSinifSube');
   var csv=[];
-  function csvIndir(csv, filename) {
+  for(let i=0;i<1;i++){
+    theForm.Us_SinifSube1_ddlSinifSube.value=siniflar[i].value;
+    theForm['pageMode'].value="Listele";
+    var formData = new FormData(theForm);
+    
+    fetch(theForm.action, {
+      method: 'POST', // or 'PUT'
+      headers: {
+        //'Content-Type': 'application/json',
+      },
+      body: formData,
+    })
+    .then(response =>response.text())
+    .then(html => {
+      //console.log('Success:', data);
+      var parser = new DOMParser();
+			var doc = parser.parseFromString(html, 'text/html');
+			//var table=doc.getElementById('Form1');
+      var tablolar = doc.getElementById("dgListem"); 
+      var satirlar = tablolar.getElementsByTagName("tr");
+      for(let j in satirlar) {
+         if(j>0) {  
+           let row=[];
+           var satir=satirlar[j].getElementsByTagName('td');
+           for(var sutun in satirlar) {
+              switch(sutun) {
+              //  case '0': 
+                case '1': 
+                //  row.push(satir[sutun].innerText);
+                  //console.log(satir[sutun].innerText);
+                  break;
+                case '2': 
+                case '3':
+                case '4':
+                  row.push(satir[sutun].innerText);
+                  console.log(satir[sutun].innerText);
+                  break;
+              }
+            }
+           csv.push(row.join(",")+"\n");
+
+         }
+      }
+	    })
+    .then(console.log(csv))
+    .then(function() {
     var csvFile;
     var downloadLink;
+    var filename="ogrenciler.csv";
     // CSV dosyası oluşturduk
     csvFile = new Blob([csv], {type: "text/csv"});
     // İndirme Linkini oluşturuyoruz.
@@ -20,74 +64,8 @@
     document.body.appendChild(downloadLink);
     // linke tıklattık, dosya indirilecektir.
     downloadLink.click();
-}
-
-
-
-  for(let i=0;i<1;i++){
-    theForm.Us_SinifSube1_ddlSinifSube.value=siniflar[i].value;
-    theForm['pageMode'].value="Listele";
-    var formData = new FormData(theForm);
-    
-    fetch(theForm.action, {
-      method: 'POST', // or 'PUT'
-      headers: {
-        //'Content-Type': 'application/json',
-      },
-      body: formData,
-    })
-    .then(response =>response.text())
-    
-    .then(html => {
-      //console.log('Success:', data);
-      var parser = new DOMParser();
-			var doc = parser.parseFromString(html, 'text/html');
-			//var table=doc.getElementById('Form1');
-      var tablolar = doc.getElementById("dgListem"); 
-      var satirlar = tablolar.getElementsByTagName("tr");
-      for(let j in satirlar) {
-         if(j>0) {  
-           var row=[];
-           var satir=satirlar[j].getElementsByTagName('td');
-           for(var sutun in satirlar) {
-              switch(sutun) {
-              //  case '0': 
-                case '1': 
-                  row.push(satir[sutun].innerText);
-                  //console.log(satir[sutun].innerText);
-                  break;
-                case '2': 
-                case '3':
-                case '4':
-                  row.push(satir[sutun].innerText);
-                 // console.log(satir[sutun].innerText);
-                  break;
-              }
-            }
-           csv.push(row.join(","));
-         }
-      }
-      
-     
-	
-	    })
-    .then(console.log(csv))
-    .then(csvIndir(csv, "ogrenciler.csv"))
+})
     .catch((error) => {
       console.error('Error:', error);
     });
-    
-    /*
-    var xhr = new XMLHttpRequest();	
-    xhr.open('POST', theForm.action);
-    xhr.responseType="document";
-    xhr.send(formData);
-    xhr.onload = function() {
-      if (xhr.status != 200) { // analyze HTTP status of the response
-        alert(`Error ${xhr.status}: ${xhr.statusText}`); // e.g. 404: Not Found
-      } else { // show the result
-        alert(`Done, got ${xhr.response.length} bytes`); // response is the server response
-      }
-    };*/
  }
-
