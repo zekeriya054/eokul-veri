@@ -17,8 +17,8 @@
     .then(html => {
       //console.log('Success:', data);
       var parser = new DOMParser();
-			var doc = parser.parseFromString(html, 'text/html');
-			//var table=doc.getElementById('Form1');
+      var doc = parser.parseFromString(html, 'text/html');
+      //var table=doc.getElementById('Form1');
       var tablolar = doc.getElementById("dgListem"); 
       var satirlar = tablolar.getElementsByTagName("tr");
       for(let j in satirlar) {
