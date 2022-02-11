@@ -1,6 +1,6 @@
   var theForm=document.getElementById('Form1');
-  var siniflar=document.getElementById('Us_SinifSube1_ddlSinifSube');
-  var csv=[];
+	var siniflar=document.getElementById('Us_SinifSube1_ddlSinifSube');
+  var csv= "";
   for(let i=0;i<1;i++){
     theForm.Us_SinifSube1_ddlSinifSube.value=siniflar[i].value;
     theForm['pageMode'].value="Listele";
@@ -17,8 +17,8 @@
     .then(html => {
       //console.log('Success:', data);
       var parser = new DOMParser();
-      var doc = parser.parseFromString(html, 'text/html');
-      //var table=doc.getElementById('Form1');
+			var doc = parser.parseFromString(html, 'text/html');
+			//var table=doc.getElementById('Form1');
       var tablolar = doc.getElementById("dgListem"); 
       var satirlar = tablolar.getElementsByTagName("tr");
       for(let j in satirlar) {
@@ -29,18 +29,19 @@
               switch(sutun) {
               //  case '0': 
                 case '1': 
-                //  row.push(satir[sutun].innerText);
+                   row.push(satir[sutun].innerText);
                   //console.log(satir[sutun].innerText);
                   break;
                 case '2': 
                 case '3':
                 case '4':
                   row.push(satir[sutun].innerText);
-                  console.log(satir[sutun].innerText);
+                 // console.log(satir[sutun].innerText);
                   break;
               }
             }
-           csv.push(row.join(",")+"\n");
+          text=row.join(",");
+          csv+=row+"\r\n";
 
          }
       }
@@ -51,7 +52,7 @@
     var downloadLink;
     var filename="ogrenciler.csv";
     // CSV dosyası oluşturduk
-    csvFile = new Blob([csv], {type: "text/csv"});
+    csvFile = new Blob([csv], { type: 'text/csv;charset=utf-8;'});
     // İndirme Linkini oluşturuyoruz.
     downloadLink = document.createElement("a");
     // dosya adını aldık.
