@@ -21,6 +21,7 @@ function getProm(v) {
           let parser = new DOMParser();
           let doc = parser.parseFromString(html, 'text/html');
           let tablolar = doc.getElementById("dgListem");
+         if(tablolar!=null) {
           let satirlar = tablolar.getElementsByTagName("tr");
           for (let j in satirlar) {
             if (j > 0) {
@@ -46,6 +47,7 @@ function getProm(v) {
 
             }
           }
+         }
         });
         resolve();
     })
